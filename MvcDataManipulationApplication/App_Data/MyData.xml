@@ -1,0 +1,36 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Data" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" type="xs:int" minOccurs="0" />
+                <xs:element name="FName" type="xs:string" minOccurs="0" />
+                <xs:element name="LName" type="xs:string" minOccurs="0" />
+                <xs:element name="Age" type="xs:string" minOccurs="0" />
+                <xs:element name="Dept" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <Data>
+    <Id>1</Id>
+    <FName>Surendra Singh</FName>
+    <LName>Kushwaha</LName>
+    <Age>34</Age>
+    <Dept>IT</Dept>
+  </Data>
+  <Data>
+    <Id>2</Id>
+    <FName>Raghu Kumar</FName>
+    <LName>Dhanapal</LName>
+    <Age>28</Age>
+    <Dept>S/W Development</Dept>
+  </Data>
+</NewDataSet>
