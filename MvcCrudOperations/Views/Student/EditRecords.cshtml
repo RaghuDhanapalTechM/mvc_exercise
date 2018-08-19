@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "EditRecords";
+}
+<h1>@ViewBag.Message</h1>
+
+@{ 
+    var sData = ViewBag.EditedRecord as MvcCrudOperations.Models.StudentData;
+}
+
+<html>
+<body>
+    <form action="../Update" method="post">
+        <div class="EditingOperation">
+            <br />
+            <table style="border:1px solid green">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                </tr>
+                <tr>
+                    <td><label >@sData.intStudentId </label><input type="hidden" name="intStudentId" value="@sData.intStudentId"/></td>
+                    <td><input type="text" name="strStudentName" value=" @sData.strStudentName" /></td>
+                    <td><input type="text" name="strStudentDepartment" value=" @sData.strStudentDepartment" /></td>
+                    <td><input type="submit" value="Save" /></td>
+                 </tr>   
+
+               
+            </table>
+            
+        </div>
+    </form>
+</body>
+</html>
