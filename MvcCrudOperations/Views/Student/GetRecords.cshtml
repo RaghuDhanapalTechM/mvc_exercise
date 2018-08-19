@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "GetRecords";
+}
+
+<html>
+    <body>
+        <style type="text/css">
+            table tr th {
+                border: 2px solid orange ;
+                padding-right:8px
+            }
+            table tr td{
+                padding-right:8px
+            }
+
+        </style>
+
+        <br />
+        <table >
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Department</th>
+            </tr>
+
+            @foreach (var data in ViewBag.listOfStudents as List<MvcCrudOperations.Models.StudentData>)
+            {
+
+                <tr>
+                    <td style="border:1px solid orange">@data.intStudentId</td>
+                    <td style="border:1px solid orange">@data.strStudentName</td>
+                    <td style="border:1px solid orange">@data.strStudentDepartment</td>
+                    <td><a href="~/Student/EditRecords/@data.intStudentId" style="border:none;padding-left:8px"><i><u>Edit</u></i></a></td>
+
+                    <td><a href="~/Student/DeleteRecords/@data.intStudentId" style="border:none;padding-left:8px" ><i><u>Delete</u></i></a></td>
+                </tr>
+
+            }
+        </table>
+
+            <br />
+            <br />     
+               <a href="~/Student/CreateRecords/"><i><u>Add a New Record</u></i></a>
+
+    </body>
+</html>
+
+<br />
+<p style=" font-size:medium;font-style:italic;color:green">@TempData["Message"]</p>
+
+
