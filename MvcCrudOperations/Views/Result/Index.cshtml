@@ -1,0 +1,324 @@
+﻿
+@{
+    ViewBag.Title = "SResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SResult</h2>
+<div class="row">
+    <div class="col-md-5">
+        <button id="btnLoad" class="btn btn-primary">Load</button>
+        <br />
+        <table id="tblStudent" class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br/>
+        <br/>
+        
+    </div>
+    <div class="col-md-5">
+        <div id="dvEditRecordSection" style="display:none">
+            <div class="wall" id="dvMsg"></div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Edit Record</div>
+                <div class="panel-body">
+                    <div class="form">
+                        <div class="form-group">
+                            <label for="txtId">Id:</label>
+                            <input type="text" class="form-control" id="txtId" placeholder="Enter Id" name="txtId" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="txtName">Name:</label>
+                            <input type="text" class="form-control" id="txtName" placeholder="Enter Name" name="txtName">
+                        </div>
+                        <div class="form-group">
+                            <label for="txtDept">Dept:</label>
+                            <input type="text" class="form-control" id="txtDept" placeholder="Enter Dept" name="txtDept">
+                        </div>
+
+                        <button id="btnSaveRecord" class="btn btn-default">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+</div>
+
+<div class="="row">
+    <div class="col-md-4">
+            <div id="dvAddRecordSection" style="display:none">
+                <div class="wall" id="dvMsg"></div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Add Record</div>
+                    <div class="panel-body">
+                        <div class="form">
+                            <div class="form-group">
+                                <label for="txtAddId">Id:</label>
+                                <input type="text" class="form-control" id="txtAddId" placeholder="Enter Id" name="txtId" disabled="disabled">
+                            </div>
+                            <div class="form-group">
+                                <label for="txtAddName">Name:</label>
+                                <input type="text" class="form-control" id="txtAddName" placeholder="Enter Name" name="txtName">
+                            </div>
+                            <div class="form-group">
+                                <label for="txtAddDept">Dept:</label>
+                                <input type="text" class="form-control" id="txtAddDept" placeholder="Enter Dept" name="txtDept">
+                            </div>
+
+                            <button id="btnAddRecord" class="btn btn-default">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $('#btnLoad').click(function () {
+            loadData();
+        });
+
+        $('#tblStudent > tbody').on('click', '#btnEdit', function () {
+            var $EditSection = $('#dvEditRecordSection');
+            $EditSection.show();
+            $('#dvMsg ', $EditSection).text('');
+            var $tr = $(this).closest('tr');
+            var id = $('td:eq(0)', $tr).text();
+
+            loadSingleData(id);
+
+            //var name = $('td:eq(1)', $tr).text();
+            //var dept = $('td:eq(2)', $tr).text();
+
+
+
+            //$('#txtId ', $EditSection).val(id);
+            //$('#txtName ', $EditSection).val(name);
+            //$('#txtDept ', $EditSection).val(dept);
+
+        });
+
+        //add
+        $('#tblStudent > tbody').on('click', '#btnAdd', function () {
+            var $AddSection = $('#dvAddRecordSection');
+            $AddSection.show();
+        });
+
+        //add
+        //delete
+        $('#tblStudent > tbody').on('click', '#btnDelete', function () {
+            debugger;
+            
+            var $tr = $(this).closest('tr');
+            var id = $('td:eq(0)', $tr).text();
+            debugger;
+
+            loadSingleDataToDelete(id);
+        });
+        //delete
+
+
+        $('#btnSaveRecord').click(function () {
+
+            var $EditSection = $('#dvEditRecordSection');
+
+            debugger;
+            var id = $('#txtId ', $EditSection).val();
+            var name = $('#txtName ', $EditSection).val();
+            var dept = $('#txtDept ', $EditSection).val();
+
+            var o = {};
+            o.intStudentId = id;
+            o.strStudentName = name;
+            o.strStudentDepartment = dept;
+
+            $.ajax({
+                type: "POST",
+                url: "UpdateData",
+                data: JSON.stringify({ data: o }),
+                // cache: false,
+                dataType: 'json',
+                contentType: "application/json;charset=utf-8",
+                success: function (d) {
+                     
+                    if (d.Status) {
+                        debugger;
+                        $EditSection.hide();
+                        loadData();
+                    }
+                    else {
+                        alert(d.Message);
+                    }
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+
+                    $("#resultarea").text(data);
+                }
+            });
+        });
+
+        //insert
+        $('#btnAddRecord').click(function () {
+
+            var $AddSection = $('#dvAddRecordSection');
+
+            debugger;
+            var id = $('#txtAddId ', $AddSection).val();
+            var name = $('#txtAddName ', $AddSection).val();
+            var dept = $('#txtAddDept ', $AddSection).val();
+
+            var oData = {};
+            oData.intStudentId = id;
+            oData.strStudentName = name;
+            oData.strStudentDepartment = dept;
+
+            $.ajax({
+                type: "POST",
+                url: "InsertData",
+                data: JSON.stringify({ data: oData }),
+                // cache: false,
+                dataType: 'json',
+                contentType: "application/json;charset=utf-8",
+                success: function (d) {
+
+                    if (d.Status) {
+                        debugger;
+                        $AddSection.hide();
+                        loadData();
+                    }
+                    else {
+                        alert(d.Message);
+                    }
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+
+                    $("#resultarea").text(data);
+                }
+            });
+        });
+        //insert
+
+        function loadData() {
+            $.ajax({
+                type: "GET",
+                url: "GetData",
+                // data: null,
+                // cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    fillTable(data);
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+
+                    $("#resultarea").text(data);
+                }
+            });
+        }
+
+        function loadSingleData(id) {
+            var o = {};
+            o.id = id;
+            var param = JSON.stringify(o);
+            $.ajax({
+                type: "POST",
+                url: "GetSingleData",
+                data: param,
+                // cache: false,
+                dataType: 'json',
+                //contentType: "application/json;charset=utf-8",
+                success: function (resp) {
+
+                    fillForm(resp);
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+
+                    $("#resultarea").text(data);
+                }
+            });
+        }
+
+        //add
+        
+
+        //add
+        //delete
+        function loadSingleDataToDelete(id) {
+            var o = {};
+            o.id = id;
+            var param = JSON.stringify(o);
+            $.ajax({
+                type: "POST",
+                url: "GetSingleDataToDelete",
+                data: param,
+                // cache: false,
+                dataType: 'json',
+                contentType: "application/json;charset=utf-8",
+                success: function (resp) {
+
+                    loadData();
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+
+                    $("#resultarea").text(data);
+                }
+            });
+        }
+        //delete
+        function fillForm(r) {
+            var $EditSection = $('#dvEditRecordSection');
+            if(r.Status){
+                $('#dvMsg ', $EditSection).text(r.Message);
+
+            $('#txtId ', $EditSection).val(r.Data.intStudentId);
+            $('#txtName ', $EditSection).val(r.Data.strStudentName);
+            $('#txtDept ', $EditSection).val(r.Data.strStudentDepartment);
+            }
+        }
+        function fillTable(data) {
+            var $tbody = $('#tblStudent > tbody');
+            $tbody.empty();
+            
+            $.each(data, function (idx, item) {
+                var $tr = $('<tr></tr>');
+                var $td1 = $('<td></td>').text(item.intStudentId)
+                var $td2 = $('<td></td > ').text(item.strStudentName);
+                var $td3 = $('<td></td >').text(item.strStudentDepartment);
+                $tr.append($td1);
+                $tr.append($td2);
+                $tr.append($td3);
+                $tr.append('<td><button id="btnEdit" class="btn btn-primary">Edit</button></td>')
+
+                $tr.append('<td><button id="btnDelete" class="btn btn-primary">Delete</button></td>')
+
+                $tbody.append($tr);
+            });
+            $tbody.append('<br/><br/> <tr><td><button id="btnAdd" class="btn btn-primary">Add a new record</button></td></tr>');
+
+        }
+
+
+    });
+
+
+</script>
+
+
